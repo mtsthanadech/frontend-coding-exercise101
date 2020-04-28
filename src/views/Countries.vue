@@ -13,8 +13,7 @@
 
 <script>
 import tableComponent from '@/components/tableComponent.vue';
-// eslint-disable-next-line no-unused-vars
-import api from '@/services/api';
+import axios from 'axios';
 
 export default {
   name: 'About',
@@ -28,13 +27,11 @@ export default {
     };
   },
   methods: {
-    async fetchData() {
-      await api.getCountries()
+    fetchData() {
+      axios.get('https://restcountries.eu/rest/v2/all')
         .then((response) => {
           this.allCountries = response.data;
           this.manageFields();
-        }).catch((err) => {
-          console.log(err);
         });
     },
     manageFields() {
