@@ -11,19 +11,34 @@
       :items="data"
       :fields="fields"
       :filter="filter"
-      :filterIncludedFields="filterOn"
+      :filterIncludedFields="fields"
       @filtered="onFiltered"
       sticky-header
       responsive
       striped
       hover small
+      style="max-height: 70vh"
     >
+      <template v-slot:cell(timezones)="row">
+        <ul>
+          <li
+            :key="`row.item.timezones${timezoneId}`"
+            v-for="(timezone, timezoneId) in row.item.timezones">
+            {{timezone}}
+          </li>
+        </ul>
+      </template>
+      <template v-slot:cell(currencies)="row">
+        <ul>
+          <li
+            :key="`row.item.timezones${currencyId}`"
+            v-for="(currency, currencyId) in row.item.currencies">
+            {{currency.name}} ({{currency.symbol}})
+          </li>
+        </ul>
+      </template>
 
     </b-table>
-    <!-- Info modal -->
-    <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-      <pre>{{ infoModal.content }}</pre>
-    </b-modal>
     <b-pagination
       v-if="data.length > perPage"
       v-model="currentPage"
@@ -35,26 +50,18 @@
 </template>
 
 <script>
-import { BTable, BPagination, BModal } from 'bootstrap-vue';
+import { BTable, BPagination } from 'bootstrap-vue';
 
 export default {
   name: 'tableComponent',
   data() {
     return {
       currentPage: 1,
-      infoModal: {
-        id: 'info-modal',
-        title: '',
-        content: '',
-      },
+      totalRows: 1,
       filter: '',
-      filterOn: [],
     };
   },
   props: {
-    fieldSlots: {
-      type: Array,
-    },
     data: {
       type: Array,
       required: true,
@@ -71,23 +78,18 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
-      this.$root.$emit('bv::show::modal', this.infoModal.id, button);
-    },
-    resetInfoModal() {
-      this.infoModal.title = '';
-      this.infoModal.content = '';
-    },
   },
-  mounted() {
-    this.totalRows = this.items.length;
+  created() {
+    this.totalRows = this.data.length;
   },
   components: {
     BTable,
     BPagination,
-    BModal,
   },
 };
 </script>
+<style>
+  th {
+    min-width: 150px;
+  }
+</style>

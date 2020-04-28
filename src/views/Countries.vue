@@ -787,15 +787,14 @@ export default {
     };
   },
   methods: {
-    // async fetchData() {
-    //   this.allCountries = await api.getCountries();
-    // },
-    fetchData() {
-      const fields = ['name', 'capital', 'region', 'subregion', 'population', 'flag'];
+    async fetchData() {
+      const allCountries = await api.getCountries();
+      allCountries.then((response) => {
+        this.allCountries = response.data;
+      });
+      const fields = ['numericCode', 'name', 'capital', 'region', 'subregion', 'timezones', 'nativeName', 'currencies', 'population', 'flag'];
+      this.countryFields = fields;
       fields.forEach((field) => {
-        this.countryFields.push({
-          key: field,
-        });
         this.fieldSlot.push({
           template: `${field}`,
           slot: field,
@@ -803,7 +802,7 @@ export default {
       });
     },
   },
-  created() {
+  mounted() {
     this.fetchData();
   },
 };

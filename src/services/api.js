@@ -28,17 +28,9 @@ async function apiRequest(url, method, path, data, params, headers = {}) {
 function getReq(type, path, params) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
+
   };
   return apiRequest(apiUrl[type], 'get', path, undefined, params, headers);
-}
-
-// eslint-disable-next-line no-unused-vars
-function postReq(type, path, data, params) {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  };
-  return apiRequest(apiUrl[type], 'post', path, data, params, headers);
 }
 
 export default {
