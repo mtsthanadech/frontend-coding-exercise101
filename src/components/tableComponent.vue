@@ -1,10 +1,12 @@
 <template>
   <div class="d-flex justify-content-center flex-column align-items-center">
-    <input v-model="filter"
-           type="search"
-           id="filterInput"
-           class="mb-3"
-           placeholder="Type to Search"/>
+    <div>
+      Filter by: <input v-model="filter"
+                        type="search"
+                        id="filterInput"
+                        class="form-control mt-3 mb-3"
+                        placeholder="Type to Search"/>
+    </div>
     <b-table
       :per-page="perPage"
       :current-page="currentPage"
@@ -20,13 +22,14 @@
       style="max-height: 70vh"
     >
       <template v-slot:cell(timezones)="row">
-        <ul>
-          <li
-            :key="`row.item.timezones${timezoneId}`"
-            v-for="(timezone, timezoneId) in row.item.timezones">
-            {{timezone}}
-          </li>
-        </ul>
+        <span
+          :key="`row.item.timezones${timezoneId}`"
+          v-for="(timezone, timezoneId) in row.item.timezones">
+          {{timezone}}
+          <template v-if="timezoneId !== row.item.timezones.length-1">
+            ,<br>
+          </template>
+        </span>
       </template>
       <template v-slot:cell(currencies)="row">
         <ul>
@@ -42,7 +45,7 @@
     <b-pagination
       v-if="data.length > perPage"
       v-model="currentPage"
-      :total-rows="data.length"
+      :total-rows="totalRows"
       :per-page="perPage"
       aria-controls="my-table"
     ></b-pagination>
@@ -90,6 +93,6 @@ export default {
 </script>
 <style>
   th {
-    min-width: 150px;
+    min-width: 200px;
   }
 </style>
