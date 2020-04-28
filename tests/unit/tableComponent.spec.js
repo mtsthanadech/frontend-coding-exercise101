@@ -10,9 +10,9 @@ const items = [
 ];
 
 const fields = [
-  "age",
-  "first_name",
-  "last_name"
+  'age',
+  'first_name',
+  'last_name',
 ];
 
 describe('tableComponent', () => {
@@ -20,7 +20,7 @@ describe('tableComponent', () => {
     const wrapper = shallowMount(tableComponent, {
       propsData: {
         data: items,
-        fields: fields,
+        fields,
         perPage: 5,
       },
     });
@@ -28,14 +28,11 @@ describe('tableComponent', () => {
     expect(wrapper.props().fields).to.equal(fields);
     expect(wrapper.props().perPage).to.equal(5);
   });
-  it('has a created hook', () => {
-    expect(typeof tableComponent.created).to.equal('function');
-  });
   it('sets the correct default data', () => {
     expect(typeof tableComponent.data).to.equal('function');
-    const defaultData = tableComponent.data()
+    const defaultData = tableComponent.data();
     expect(defaultData.currentPage).to.equal(1);
     expect(defaultData.totalRows).to.equal(1);
     expect(defaultData.filter).to.equal('');
-  })
+  });
 });
